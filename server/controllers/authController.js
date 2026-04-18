@@ -204,3 +204,152 @@ const isMatched = await bcrypt.compare(password,userDetails.password);
     })
  }
 }
+
+
+// send otp for resend password 
+exports.sendOtpForgotPassword = async(req,res)=>{
+    try{
+        // fetch   the email
+       const {email} = req.body;
+    //    validation
+    if(!email){
+        return res.status(400).json({
+            success:false,
+            message: "please fill all the input fileds",
+        });
+    }
+    // check is user already have an account 
+    const userDetails = await User.findOne({email:email});
+
+    if(!userDetails){
+        return res.status(400).json({
+            success:false,
+            message:"User  not resistered",
+        })
+    }
+
+
+//   generate a otp 
+// with 4 digit and ignote special carr,uppercase,lowercae, mens only number are allowed
+    const newOtp = otpGenerator.generate(4,{
+        specialChars:false,
+        upperCaseAlphabets:false,
+        lowerCaseAlphabets:false,
+    });
+
+    // Create entry on DB
+     const newOpt = await OTP.create({
+        email:email,
+        otp:newOtp,
+     })
+
+// return response
+return res.status(200).json({
+    success:true,
+    message:"Otp send successfully",
+    newOpt,
+})
+
+
+    }catch( error) {
+        console.log(error);
+         return res.status(500).json({
+            success: false,
+            message:"internal server error",
+         })
+
+    }
+}
+
+// varify otp
+exports.forgotPasswordOtpVerify = async(req,res)=>{
+    try {
+        // fetch data
+        const{ otp,email} = req.body;
+        //  otp validation
+        if(!otp){
+            return res.status(400).json({
+                success:false,
+                message:"please fill the otp"
+            })
+        }
+        // email validation
+        if(!email){
+            return res.status(400).json({
+                success:false,
+                message:"Something went wrong"
+            })
+        }
+
+        // find latest otp
+        const latestOtp = await OTP.findOne({email:email}).sort({createdAt:-1});
+         if(!latestOtp){
+            return res.status(404).json({
+                success:false,
+                message:"otp  expired "
+            })
+         }
+        // varify the otp 
+        if(latestOtp.otp !== otp){
+            return res.status(403).json({
+                success:false,
+                message:"Otp not matched"
+            })
+        }
+        // return response
+         return res.status(200).json({
+            success:true,
+            message:"Otp matched successfully"
+         })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"Internal server error"
+        })
+        
+    }
+}
+
+// Reset password
+exports.resetPassword = async(req, res) => {
+    try {
+        // fetch data
+        const {password, confirmPassword,email} = req.body;
+
+        // validation
+        if (!password || !confirmPassword || !email) {
+            return res.status(400).json({
+                success: false,
+                message: "Please fill all the input fields"
+            })
+        }
+        //  check password and confirmPassword same  or not
+        if (password !== confirmPassword) {
+            return res.status(400).json({
+                success:false,
+                message:"password and confirmPassword not matched"
+            })
+        }
+
+        // hashed the password 
+        const hashedPassword = await bcrypt.hash(password,10);
+        //  update password 
+         const updatedPassword = await User.findOneAndUpdate({email:email},
+                 {password:hashedPassword},{new:true})
+        // return response
+         return res.status(200).json({
+            success:true,
+            message:"Password update sucessfully"
+         })
+
+    } catch (error) {
+        // error handling
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"Internal server error"
+        })
+    }
+}

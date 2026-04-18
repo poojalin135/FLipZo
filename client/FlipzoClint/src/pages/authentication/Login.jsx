@@ -140,7 +140,7 @@ const onChangeHandler=(event)=>{
                  }}  
                  name='password'
                  />
-                  <Link to={"#"} className='text-orange-500 self-end text-[14px] inputAnimation'>
+                  <Link to={"/fotgot-password"} className='text-orange-500 self-end text-[14px] inputAnimation'>
                   Forgot password?</Link>
               </div>
           <div>

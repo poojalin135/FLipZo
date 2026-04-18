@@ -5,6 +5,8 @@ import { Toaster } from 'react-hot-toast'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Otp from './pages/authentication/Otp'
 import Login from './pages/authentication/Login'
+import ForgotPassword from './pages/authentication/ForgotPassword'
+import ResetPasswordOtpVarify from './pages/authentication/ResetPasswordOtpVarify'
 
 
 function App() {
@@ -18,6 +20,12 @@ function App() {
     },
     {
       path:"/login",element:<><Login/></>
+    },
+    {
+      path:"/fotgot-password",element:<><ForgotPassword/></>
+    },
+     {
+      path:"/resetPasswordOtpVarify",element:<><ResetPasswordOtpVarify/></>
     }
   ])
   return (
