@@ -7,10 +7,12 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function ForgotPassword() {
     const[email, setEmail] = useState("")
      const [loading,setLoading]= useState(false);
+     const navigate =useNavigate();
 
 useGSAP(()=>{
     const t1 = gsap.timeline();
@@ -39,6 +41,7 @@ const  submitHandler = async (e) => {
           throw new Error("Error occur during  sending otp for reset password")
         }
       toast.dismiss(toastId);
+      navigate("/resetPasswordOtpVarify",{state:{email:email}});
       toast.success(response?.data?.message);
       setLoading(false);
     } catch (error) {

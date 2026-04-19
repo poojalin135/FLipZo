@@ -7,6 +7,7 @@ import Otp from './pages/authentication/Otp'
 import Login from './pages/authentication/Login'
 import ForgotPassword from './pages/authentication/ForgotPassword'
 import ResetPasswordOtpVarify from './pages/authentication/ResetPasswordOtpVarify'
+import ResetPassword from './pages/authentication/ResetPassword'
 
 
 function App() {
@@ -26,6 +27,9 @@ function App() {
     },
      {
       path:"/resetPasswordOtpVarify",element:<><ResetPasswordOtpVarify/></>
+    },
+    {
+      path:"/reset-password",element:<><ResetPassword/></>
     }
   ])
   return (
