@@ -110,7 +110,7 @@ const navigate = useNavigate();
            <Typography variant='h3' sx={{fontWeight:600}}>
              SignUp
            </Typography>
-           <p className='text-[16px] mt-2'>Fill the form below to create your account</p>
+           <p className='text-[14px] mt-2'>Fill the form below to create your account</p>
 
 
            {/* create form */}

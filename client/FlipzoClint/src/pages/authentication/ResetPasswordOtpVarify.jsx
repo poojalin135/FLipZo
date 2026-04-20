@@ -19,67 +19,6 @@ const ResetPasswordOtpVarify = () =>  {
     const[otpLoading,setOtpLoading]=useState(false)
     const navigate = useNavigate();
 
-
-
-//   // resend otp handler
-//     const resendOtpHandler= async()=>{
-  
-//      const data = {
-//       email:formData.email,
-      
-//      }
-
-//     const toastId = toast.loading("Sending otp...")
-//     try{
-//         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/create-otp`,data);
-//         if(!response.data.success){
-//           throw new Error("Error occur during SignUp")
-//         }
-//       toast.dismiss(toastId);
-//       //  pop out msg when otp send
-//        toast.success("Otp send succesfully");
-
-//     }catch(error){
-//        toast.dismiss(toastId);
-//        toast.error(error.response?.data?.message || " Something went wrong")
-//        console.log(error);
-      
-
-//     }
-//    }
-
-//   //  varify otp
-//    const varifyOtpHandler = async()=>{
-//       if(otp.length <4){
-//         toast.error("please varify the otp");
-//         return;
-//       }
-
-//      const toastId =  toast.loading("Varifying otp ...");
-//      formData.otp = otp;
-
-//        try {
-//         setLoading(true);
-//        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/signUp`, formData);
-//          if(!response?.data?.success){
-//          throw new Error("Error occur during varifying otp");
-//          }
-
-//          toast.dismiss(toastId);
-//          toast.success(response?.data?.message);
-//          setLoading(false);
-//          navigate("/login");
-
-
-//        } catch (error) {
-//         console.log(error);
-//         toast.dismiss(toastId);
-//         toast.error(error.response?.data?.message);
-//         setLoading(false);
-//        }
-//    }
-
-
     useGSAP(()=>{
         gsap.from(".otpAnimation",{
           x:-100,
@@ -127,7 +66,7 @@ const ResetPasswordOtpVarify = () =>  {
             throw new Error("Error occur during verifying otp for reset password");
         }
         toast.dismiss(toastId);
-        navigate("/reset-password");
+        navigate("/reset-password",{state:{email: userEmail.email}});
         toast.success(response?.data?.message);
         setOtpLoading(false);
 
